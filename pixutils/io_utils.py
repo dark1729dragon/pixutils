@@ -12,27 +12,27 @@ def dirop(*dirpath, **kw):
     '''
     This function will recursively create folder, if the folder does not exist.
     :param dirpath: can be anything including int, string, bool, list; except --> :,|,<,>,,?,*
-    :param kw: timestamp, hash, remove, mkdir, sep
+    :param kw: ts, hash, remove, mkdir, sep
     :return:
     Examples
     --------
-        test_dir, out = 'test', ['e1','e2']
+        test_dir, out = 'test', ['e1', 'e2']
         print('-' * 150)
         print('os.path.join      ->', join(dbpath, r'results///desktop\\\img', 'log', 'out'))
         print('dirop join        ->', dirop(dbpath, r'results\\\desktop///img', 'log', 'out'))  # this will create dir if not exist
         print('deleting folder   ->', dirop(dbpath, r'results\desktop/img', remove=True))  # this will delete the folder if exist
         print('hashing           ->', dirop(dbpath, r'results\log', out, hash=True))
         print('hashing           ->', dirop(dbpath, r'results\log', out, hash=True))
-        print('time stamp hash   ->', dirop(dbpath, 'results', test_dir, 'log', out, out, timestamp=True))
+        print('time stamp hash   ->', dirop(dbpath, 'results', test_dir, 'log', out, out, timestamp='stmp'))
         print('skipping creating ->', dirop(dbpath, 'results', test_dir, 'log', out, out, timestamp=True, mkdir=False))
         cv2.imwrite(dirop(dbpath, r'results\\\desktop///img', 'log', 'gray.jpg', hash=True), 128 + np.zeros((100, 100), 'u1'))
-        cv2.imwrite(dirop(dbpath, r'results///desktop\\\img', 'log', 'gray.jpg', hash=True), 128 + np.zeros((100, 100), 'u1'))
+        cv2.imwrite(dirop(dbpath, r'results///desktop\\\img', 'log', 'gray.jpg', hash='zero'), 128 + np.zeros((100, 100), 'u1'))
         cv2.imwrite(dirop(dbpath, r'results\\\desktop///img', 'log', 'white.jpg', timestamp=True), 255 + np.zeros((100, 100), 'u1'))
         print('-' * 150)
         print('See the result at: %s' % dirop(dbpath, 'results', mkdir=False))
     '''
     global __dirhash
-    mkdir, timestamp, hsh, remove,sep = kw.get('mkdir', True), kw.get('timestamp'), kw.get('hash'), kw.get('remove'), kw.get('sep', os.sep)
+    mkdir, ts, hsh, remove,sep = kw.get('mkdir', True), kw.get('timestamp'), kw.get('hash'), kw.get('remove'), kw.get('sep', os.sep)
     dirpath = list(map(str, dirpath))
     path = join(*dirpath)
     path = path.replace('\\',sep)
@@ -40,12 +40,12 @@ def dirop(*dirpath, **kw):
     in_name, file_ext = os.path.splitext(path)
     if file_ext:  # the input is file
         dir_path = dirname(in_name)
-        if timestamp:
+        if ts is not None:
             __dirhash[dir_path] += 1
-            path = '%s_%s_%s%s' % (in_name, dt.now().strftime('%I%M%p%S'), __dirhash[dir_path], file_ext)
-        elif hsh:
+            path = '%s%s_%s_%s%s' % (in_name, '' if ts is True else ts, dt.now().strftime('%I%M%p%S'), __dirhash[dir_path], file_ext)
+        elif hsh is not None:
             __dirhash[dir_path] += 1
-            path = '%s_%s%s' % (in_name, __dirhash[dir_path], file_ext)
+            path = '%s%s_%s%s' % (in_name,'' if hsh is True else hsh, __dirhash[dir_path], file_ext)
         elif remove is True and exists(path):
             print('Deleting  path: %s' % path)
             os.remove(path)
@@ -54,12 +54,12 @@ def dirop(*dirpath, **kw):
             os.makedirs(dir_path)
         return path
     else:  # the input is file folder
-        if timestamp:
+        if ts is not None:
             __dirhash[in_name] += 1
-            path = '%s_%s_%s' % (in_name, dt.now().strftime('%I%M%p%S'), __dirhash[in_name])
-        elif hsh:
+            path = '%s%s_%s_%s' % (in_name,'' if ts is True else ts, dt.now().strftime('%I%M%p%S'), __dirhash[in_name])
+        elif hsh is not None:
             __dirhash[in_name] += 1
-            path = '%s_%s' % (in_name, __dirhash[in_name])
+            path = '%s%s_%s' % (in_name,'' if hsh is True else hsh, __dirhash[in_name])
         elif remove is True and exists(path):
             print('Deleteing path: %s' % path)
             shutil.rmtree(path, ignore_errors=True)

@@ -207,7 +207,7 @@ def label3(img, text, loc=None, fg=foreground, bg=None, textsize=.5, thickness=3
     return img
 
 
-def label4(img, text, loc=None, fg=foreground, bg=-1, textsize=.5, thickness=3, scale=None, bias=(0, 0, 0, 0)):
+def label4(img, text, loc=None, fg=foreground, bg=None, textsize=.5, thickness=3, scale=None, bias=(0, 0, 0, 0)):
     '''
     NOTE:
         when loc get 4 values label will automatically draw bounding box

@@ -63,6 +63,7 @@ class ThreadIt2(Thread):
 
     def read(self, stop=False):
         if stop:
+            self.cam.release()
             return False, None
         if not self.q.empty():
             # print(self.q.qsize())

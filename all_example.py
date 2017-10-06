@@ -12,6 +12,7 @@ from pixutils import *
 # esc   -> close the video
 # space -> pause video
 # enter -> play video
+# d     -> destroy all windows 
 if bk!= None: # imshow = win('output', 1, video, bk=dirop(dbpath, 'results', remove=True))
     # s     -> take screen short (cannot support multiple window)
 

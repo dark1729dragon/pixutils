@@ -1,11 +1,23 @@
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 
-
-
-
 from .videoutils import *
+
+
 class Player:
     '''
+    # esc   -> close the video
+    # space -> pause video
+    # enter -> play video
+    # d     -> destroy all windows
+    if bk!= None: # imshow = win('output', 1, video, bk=dirop(dbpath, 'results', remove=True))
+        # s     -> take screen short (cannot support multiple window)
+
+    dirop is helpful to support directory level operations like
+        automatically creating multiple folders/files recursively (if not found)
+        deleting multiple folders/files recursively
+        time stamping files/folders
+        appending unique hash number at end of folder automatically
+        prefix the file name with certain preset value (like frame no)
     ____________________________________Example____________________________________
     # Get two feed and run in threads
     # Feed1: read the sequence of videoimgs and and detect faces
@@ -49,6 +61,7 @@ class Player:
         print(tic.toc(fno2s))
     ____________________________________Example____________________________________
     '''
+
     def __init__(self, cam, start=0, stop=None, resize=None, resize_method=cv2.INTER_LINEAR, custom_fn=None, hide_print=False):
         (self.source, self.cam), self.custom_fn, self.resize, self.start = cam, custom_fn, resize, 0
         if start and self.source != 'stream':
@@ -73,7 +86,6 @@ class Player:
             print('Start frame           : %s' % self.start)
             print('Stop frame            : %s' % self.end)
             print('Resize                : %s' % str(self.resize))
-            print('Resize Method         : %s' % 'NA' if self.resize is None else self.resize_method)
             print('height_row, width_col : %s, %s' % (self.height_row, self.width_col))
         self._stop = False
         self.write_width_col, self.write_height_row = None, None
@@ -91,7 +103,7 @@ class Player:
                 self.stop(closeThread=True)
                 print('video ended (frameno): %s' % crnt_frame)
                 break
-            if self.resize is not None: img = cv2.resize(img, (self.width_col, self.height_row),interpolation=self.resize_method)
+            if self.resize is not None: img = cv2.resize(img, (self.width_col, self.height_row), interpolation=self.resize_method)
 
             # video reader start here
             chunks.append(img)
@@ -159,7 +171,7 @@ class Player:
                 self.stop(closeThread=True)
                 print('video ended (frameno): %s' % crnt_frame)
                 break
-            if self.resize is not None: img = cv2.resize(img, (self.width_col, self.height_row),interpolation=self.resize_method)
+            if self.resize is not None: img = cv2.resize(img, (self.width_col, self.height_row), interpolation=self.resize_method)
 
             # video reader start here
             temp.append(img)
@@ -181,11 +193,10 @@ class Player:
                 self.stop(closeThread=True)
                 print('video ended (frameno): %s' % crnt_frame)
                 break
-            if self.resize is not None: img = cv2.resize(img, (self.width_col, self.height_row),interpolation=self.resize_method)
+            if self.resize is not None: img = cv2.resize(img, (self.width_col, self.height_row), interpolation=self.resize_method)
             yield crnt_frame, img
         self.cam.release()
         cv2.destroyAllWindows()
-
 
     def stop(self, closeThread=False):
         self._stop = True
