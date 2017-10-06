@@ -115,9 +115,13 @@ def example5(dbpath):
         i, j = np.where(face == 255)
         print(i.min(), j.min(), i.max(), j.max())
 
-if __name__ == '__main__':
-    example1(dbpath)
-    # example2(dbpath)
-    # example3(dbpath)
-    # example4(dbpath)
-    # dirop(dbpath, 'results', remove=True)  # clear all logs
+def example6(dbpath):
+    img = cv2.imread(join(dbpath, 'imgs', 'lenna.png'),0)
+    img = border(img, (100, 200, 300, 400), 125)
+    win("gray image bordering", )(img)
+    img = cv2.imread(join(dbpath, 'imgs', 'lenna.png'))
+    img = border(img, (100, 200, 300, 400), 125)
+    win("color image bordering", )(img)
+    img = cv2.imread(join(dbpath, 'imgs', 'lenna.png'))
+    i = border(img, (100, 200, 300, 400), [(125, 68, 27), (56, 77, 159), (100, 20, 189), (68, 10, 99)])
+    win("3channel image multi bordering", 0)(i)

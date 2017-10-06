@@ -100,6 +100,8 @@ class Player:
             if len(frameno) == chunk_size:
                 yield np.array(frameno), np.array(chunks)
                 chunks, frameno = [], []
+        self.cam.release()
+        cv2.destroyAllWindows()
 
     def __chunk_optimized(self, chunk_size):
         chunks, frameno, count, crnt_frame = None, [], 0, self.start
@@ -165,6 +167,8 @@ class Player:
             crnt_frame += 1
             if len(temp) == queue_size:
                 yield np.array(frameno), np.array(temp)
+        self.cam.release()
+        cv2.destroyAllWindows()
 
     def play(self, _=None):
         crnt_frame = self.start
@@ -180,6 +184,8 @@ class Player:
             if self.resize is not None: img = cv2.resize(img, (self.width_col, self.height_row),interpolation=self.resize_method)
             yield crnt_frame, img
         self.cam.release()
+        cv2.destroyAllWindows()
+
 
     def stop(self, closeThread=False):
         self._stop = True

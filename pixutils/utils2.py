@@ -1,7 +1,5 @@
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 
-
-
 # ----------------------------------------------default-------------------------------------------- #
 foreground = (90, 43, 69)  # foreground, -1
 # ------------------------------------------------------------------------------------------------- #
@@ -335,3 +333,51 @@ def shiftbb(bigbb, querybb, scale=None, bias=(0, 0, 0, 0), win=None):
     qx0, qy0, qx1, qy1 = querybb
     bx, by, _, _ = bb_bias(bigbb, scale, bias, win)
     return bx + qx0, by + qy0, bx + qx1, by + qy1
+
+
+def border(img, (left_border, top_border, right_border,bottom_border), val=0):
+    '''
+    This will add border to the given image
+        img = np.zeros((300, 300), 'u1')
+        img = border(img, (100, 200, 300, 400), 125)
+        win("gray image bordering", )(img.copy())
+        img = np.zeros((300, 300, 3), 'u1')
+        img = border(img, (100, 200, 300, 400), 125)
+        win("color image bordering", )(img.copy())
+        img = np.zeros((300, 300, 3), 'u1')
+        i = border(img, (100, 200, 300, 400), [(125, 68, 27), (56, 77, 159), (100, 20, 189), (68, 10, 99)])
+        print i.shape
+        win("3channel image multi bordering", 0)(i)
+    '''
+    try:
+        a, b, c, d = val
+    except:
+        a, b, c, d = val, val, val, val
+    if len(img.shape) == 2:
+        p = np.empty((img.shape[0], left_border), img.dtype)
+        p[:] = a
+        img = cv2.hconcat([p, img])
+        p = np.empty((top_border, img.shape[1]), img.dtype)
+        p[:] = b
+        img = cv2.vconcat([p, img])
+        p = np.empty((img.shape[0], right_border), img.dtype)
+        p[:] = c
+        img = cv2.hconcat([img, p])
+        p = np.empty((bottom_border, img.shape[1]), img.dtype)
+        p[:] = d
+        img = cv2.vconcat([img, p])
+        return img
+    else:
+        p = np.empty((img.shape[0], left_border, 3), img.dtype)
+        p[:] = a
+        img = cv2.hconcat([p, img])
+        p = np.empty((top_border, img.shape[1], 3), img.dtype)
+        p[:] = b
+        img = cv2.vconcat([p, img])
+        p = np.empty((img.shape[0], right_border, 3), img.dtype)
+        p[:] = c
+        img = cv2.hconcat([img, p])
+        p = np.empty((bottom_border, img.shape[1], 3), img.dtype)
+        p[:] = d
+        img = cv2.vconcat([img, p])
+        return img

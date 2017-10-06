@@ -140,6 +140,8 @@ class win():
             key = 'space'
         elif key == 115 and self.bk:
             cv2.imwrite(dirop(self.bk, '%s_ss' % self.winname, 'i.jpg', timestamp=True), img)
+        elif key == 99:
+            cv2.destroyAllWindows()
         return key
 
     def wait(self, waittime=None):
@@ -156,6 +158,8 @@ class win():
         elif key == 32:
             self.delay = 0
             key = 'space'
+        elif key == 99:
+            cv2.destroyAllWindows()
         return key
 
     def __call__(self, img):
@@ -180,6 +184,8 @@ class win():
             key = 'space'
         elif key == 115 and self.bk:
             cv2.imwrite(dirop(self.bk, '%s_ss' % self.winname, 'i.jpg', timestamp=True), img)
+        elif key == 99:
+            cv2.destroyAllWindows()
         return key
 
 

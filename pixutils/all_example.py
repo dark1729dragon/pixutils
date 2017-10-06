@@ -94,12 +94,12 @@ if '':
 
 
 parser = argparse.ArgumentParser(description='Example of pixutils module')
-parser.add_argument('--dbpath', default='str',
+parser.add_argument('--dbpath', default=dirop(os.sep, os.sep.join(splitpath(__file__)[:-1]), r'data_base',mkdir=False),
                     help='data base path eg: /pixutils_dev/data_base')
 args = parser.parse_args()
 # dbpath = dirop(os.sep, os.sep.join(splitpath(__file__)[:-1]), r'data_base',mkdir=False)
 dbpath = dirop(args.dbpath,mkdir=False)
-print('dbpath: %s' % dbpath)    
+print('dbpath: %s' % dbpath)
 MediaPlayer_examples.example4(dbpath)
 MediaPlayer_examples.example1(dbpath)
 MediaPlayer_examples.example2(dbpath)
@@ -117,3 +117,4 @@ utils2_example.example2(dbpath)
 utils2_example.example3(dbpath)
 utils2_example.example4(dbpath)
 utils2_example.example5(dbpath)
+utils2_example.example6(dbpath)
