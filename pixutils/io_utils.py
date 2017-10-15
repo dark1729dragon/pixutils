@@ -47,7 +47,7 @@ def dirop(*dirpath, **kw):
             __dirhash[dir_path] += 1
             path = '%s%s_%s%s' % (in_name,'' if hsh is True else hsh, __dirhash[dir_path], file_ext)
         elif remove is True and exists(path):
-            print('Deleting  path: %s' % path)
+            print('Deleting path: %s' % path)
             os.remove(path)
             __dirhash[path] = 0
         if mkdir and not exists(dir_path) and dir_path:
@@ -61,7 +61,7 @@ def dirop(*dirpath, **kw):
             __dirhash[in_name] += 1
             path = '%s%s_%s' % (in_name,'' if hsh is True else hsh, __dirhash[in_name])
         elif remove is True and exists(path):
-            print('Deleteing path: %s' % path)
+            print('Deleting path: %s' % path)
             shutil.rmtree(path, ignore_errors=True)
             __dirhash[in_name] = 0
         dir_path = path
