@@ -207,3 +207,37 @@ def splitpath(path, sep=os.sep):
     path = path.replace('\\',sep)
     path = path.replace('/', sep)
     return [p for p in path.split(sep) if p]
+
+
+def im2txt(img, bookpath=None, resolution=1.0, sep=''):
+    '''
+    This function create text representation of pixels
+    useful to visualize how machine sees the image
+    Example:
+    --------
+        for pix in im2txt(img,resolution=1/256.0,sep=''):
+            print pix
+        im2txt(img, 'temp.txt',resolution=.1,sep='-')
+
+    :param img: input image
+    :param bookpath: text path or (None -> return the text)
+    :param resolution: resolution=.1 -> 255*.1 = 25; resolution=1/256.0
+    :param sep:
+    :return: if bookpath is None:
+                returns list of rows of image
+             else:
+                returns file path (bookpath)  
+    '''
+    img = np.round((img * float(resolution)))
+    if img.min() >= 0:
+        val = str(len(str(img.max())) - 2)
+        np.savetxt(bookpath or 'temp.txt', img, fmt=str(b'%' + val + 'd'), delimiter=str(sep))
+    else:
+        val = str(len(str(img.max())) - 1)
+        np.savetxt(bookpath or 'temp.txt', img, fmt=str('%' + val + 'd'), delimiter=str(sep))
+    if bookpath is None:
+        with open('temp.txt', b'r') as book:
+            bookpath = book.read().split('\n')
+        dirop('temp.txt', remove=True)
+    return bookpath
+
